@@ -62,28 +62,28 @@ service cloud.firestore {
 
     match /products/{productId} {
       allow get: if isValidId(productId);
-      allow list: if resource == null || resource.data.id is string;
+      allow list: if resource.data.id >= '';
       allow create, update: if isValidId(productId) && isValidProduct(incoming());
       allow delete: if isValidId(productId);
     }
 
     match /categories/{categoryId} {
       allow get: if isValidId(categoryId);
-      allow list: if resource == null || resource.data.id is string;
+      allow list: if resource.data.id >= '';
       allow create, update: if isValidId(categoryId) && isValidCategory(incoming());
       allow delete: if isValidId(categoryId);
     }
 
     match /orders/{orderId} {
       allow get: if isValidId(orderId);
-      allow list: if resource == null || resource.data.id is string;
+      allow list: if resource.data.id >= '';
       allow create, update: if isValidId(orderId) && isValidOrder(incoming());
       allow delete: if isValidId(orderId);
     }
 
     match /settings/{settingId} {
       allow get: if isValidId(settingId);
-      allow list: if resource == null || resource.data.id is string;
+      allow list: if resource.data.id >= '';
       allow create, update: if isValidId(settingId) && incoming().id is string && incoming().id.size() <= 128 && incoming().updatedAt is string && incoming().updatedAt.size() <= 64;
       allow delete: if isValidId(settingId);
     }
