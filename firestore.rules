@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidProduct(data) {
+      return data.keys().hasAll(['id', 'name', 'description', 'categoryId', 'images', 'sellingPrice', 'stock', 'weight', 'weightUnit', 'featured', 'active', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 300
+        && data.description is string && data.description.size() <= 5000
+        && data.categoryId is string && data.categoryId.size() <= 128
+        && data.images is list && data.images.size() <= 20
+        && data.sellingPrice is number && data.sellingPrice >= 0
+        && data.stock is number
+        && data.weight is number && data.weight >= 0
+        && data.weightUnit in ['g', 'kg']
+        && data.featured is bool
+        && data.active is bool
+        && data.createdAt is string && data.createdAt.size() <= 64
+        && data.updatedAt is string && data.updatedAt.size() <= 64;
+    }
+
+    function isValidCategory(data) {
+      return data.keys().hasAll(['id', 'name', 'image', 'description', 'active', 'displayOrder'])
+        && data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() >= 1 && data.name.size() <= 200
+        && data.image is string && data.image.size() <= 500000
+        && data.description is string && data.description.size() <= 1000
+        && data.active is bool
+        && data.displayOrder is number;
+    }
+
+    function isValidOrder(data) {
+      return data.keys().hasAll(['id', 'orderNumber', 'customer', 'items', 'itemsSubtotal', 'deliveryCharge', 'totalAmount', 'advanceAmount', 'remainingAmount', 'dueAmount', 'paymentMethod', 'paymentStatus', 'orderStatus', 'area', 'createdAt', 'updatedAt'])
+        && data.id is string && data.id.size() <= 128
+        && data.orderNumber is string && data.orderNumber.size() >= 2 && data.orderNumber.size() <= 64
+        && data.customer is map
+        && data.items is list && data.items.size() >= 1 && data.items.size() <= 100
+        && data.itemsSubtotal is number && data.itemsSubtotal >= 0
+        && data.deliveryCharge is number && data.deliveryCharge >= 0
+        && data.totalAmount is number && data.totalAmount >= 0
+        && data.advanceAmount is number && data.advanceAmount >= 0
+        && data.remainingAmount is number && data.remainingAmount >= 0
+        && data.dueAmount is number && data.dueAmount >= 0
+        && data.paymentMethod is string && data.paymentMethod.size() <= 64
+        && data.paymentStatus is string && data.paymentStatus.size() <= 64
+        && data.orderStatus is string && data.orderStatus.size() <= 64
+        && data.area is string && data.area.size() <= 64
+        && data.createdAt is string && data.createdAt.size() <= 64
+        && data.updatedAt is string && data.updatedAt.size() <= 64;
+    }
+
+    match /products/{productId} {
+      allow get: if isValidId(productId);
+      allow list: if resource == null || resource.data.id is string;
+      allow create, update: if isValidId(productId) && isValidProduct(incoming());
+      allow delete: if isValidId(productId);
+    }
+
+    match /categories/{categoryId} {
+      allow get: if isValidId(categoryId);
+      allow list: if resource == null || resource.data.id is string;
+      allow create, update: if isValidId(categoryId) && isValidCategory(incoming());
+      allow delete: if isValidId(categoryId);
+    }
+
+    match /orders/{orderId} {
+      allow get: if isValidId(orderId);
+      allow list: if resource == null || resource.data.id is string;
+      allow create, update: if isValidId(orderId) && isValidOrder(incoming());
+      allow delete: if isValidId(orderId);
+    }
+
+    match /settings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list: if resource == null || resource.data.id is string;
+      allow create, update: if isValidId(settingId) && incoming().id is string && incoming().id.size() <= 128 && incoming().updatedAt is string && incoming().updatedAt.size() <= 64;
+      allow delete: if isValidId(settingId);
+    }
+  }
+}

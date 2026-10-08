@@ -1,0 +1,103 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Craft material or DIY supply product sold on the storefront",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "nameBn": { "type": "string", "maxLength": 300 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "categoryId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "images": { "type": "array", "description": "List of image URLs or data URIs" },
+        "sellingPrice": { "type": "number" },
+        "originalPrice": { "type": "number" },
+        "stock": { "type": "number" },
+        "weight": { "type": "number" },
+        "weightUnit": { "type": "string", "enum": ["g", "kg"], "maxLength": 10 },
+        "featured": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "variants": { "type": "object" },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "name", "description", "categoryId", "images", "sellingPrice", "stock", "weight", "weightUnit", "featured", "active", "createdAt", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product category in the craft store",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "nameBn": { "type": "string", "maxLength": 200 },
+        "image": { "type": "string", "maxLength": 2000 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "active": { "type": "boolean" },
+        "displayOrder": { "type": "number" }
+      },
+      "required": ["id", "name", "image", "description", "active", "displayOrder"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order with items, delivery area, advance payment TrxID, and tracking status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderNumber": { "type": "string", "minLength": 2, "maxLength": 64 },
+        "customer": { "type": "object" },
+        "items": { "type": "array" },
+        "itemsSubtotal": { "type": "number" },
+        "deliveryCharge": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "advanceAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "dueAmount": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 64 },
+        "paymentStatus": { "type": "string", "enum": ["pending_verification", "advance_paid", "completed"], "maxLength": 64 },
+        "orderStatus": { "type": "string", "maxLength": 64 },
+        "cancellationReason": { "type": "string", "maxLength": 1000 },
+        "cancelledAt": { "type": "string", "maxLength": 64 },
+        "confirmedAt": { "type": "string", "maxLength": 64 },
+        "statusHistory": { "type": "array" },
+        "area": { "type": "string", "enum": ["Dhaka City", "Dhaka Sub Urban", "Outside Dhaka"], "maxLength": 64 },
+        "orderNote": { "type": "string", "maxLength": 2000 },
+        "adminNote": { "type": "string", "maxLength": 2000 },
+        "trxId": { "type": "string", "maxLength": 128 },
+        "senderPhone": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "orderNumber", "customer", "items", "itemsSubtotal", "deliveryCharge", "totalAmount", "advanceAmount", "remainingAmount", "dueAmount", "paymentMethod", "paymentStatus", "orderStatus", "area", "createdAt", "updatedAt"]
+    },
+    "StoreSetting": {
+      "title": "StoreSetting",
+      "description": "Configuration document for delivery rules, payment numbers, footer sections, order status configs, or admin settings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "updatedAt": { "type": "string", "maxLength": 64 }
+      },
+      "required": ["id", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "All products available on the store and managed in Admin"
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Store product categories"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders placed on checkout and managed in Admin"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/StoreSetting" },
+      "description": "Store configurations including delivery_rules, payment_config, footer_config, order_meta, and admin_credentials"
+    }
+  }
+}

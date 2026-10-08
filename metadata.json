@@ -1,0 +1,6 @@
+{
+  "name": "Eksho Rokom - Craft Materials & DIY Supplies",
+  "description": "Eksho Rokom (একশো রকম) provides premium materials, tools, and accessories for miniature making and DIY crafts across Bangladesh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

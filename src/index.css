@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Li Ador Noirrit Semi Bold';
+  src: url('/fonts/LiAdorNoirrit-SemiBold.woff2') format('woff2'),
+       url('/fonts/LiAdorNoirrit-SemiBold.woff') format('woff'),
+       url('/fonts/LiAdorNoirrit-SemiBold.ttf') format('truetype'),
+       local('Li Ador Noirrit Semi Bold'),
+       local('Li Ador Noirrit SemiBold'),
+       local('LiAdorNoirrit-SemiBold');
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Li Ador Noirrit Semi Bold';
+  src: url('/fonts/LiAdorNoirrit-SemiBold.woff2') format('woff2'),
+       url('/fonts/LiAdorNoirrit-SemiBold.woff') format('woff'),
+       url('/fonts/LiAdorNoirrit-SemiBold.ttf') format('truetype'),
+       local('Li Ador Noirrit Semi Bold'),
+       local('Li Ador Noirrit SemiBold'),
+       local('LiAdorNoirrit-SemiBold');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Li Ador Noirrit';
+  src: url('/fonts/LiAdorNoirrit-SemiBold.woff2') format('woff2'),
+       url('/fonts/LiAdorNoirrit-SemiBold.woff') format('woff'),
+       url('/fonts/LiAdorNoirrit-SemiBold.ttf') format('truetype'),
+       local('Li Ador Noirrit Semi Bold'),
+       local('Li Ador Noirrit SemiBold'),
+       local('LiAdorNoirrit-SemiBold');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+
+@theme {
+  --font-sans: 'Li Ador Noirrit Semi Bold', 'Li Ador Noirrit', sans-serif;
+  --font-mono: 'Li Ador Noirrit Semi Bold', 'Li Ador Noirrit', sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  *,
+  *::before,
+  *::after,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  li,
+  label,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: 'Li Ador Noirrit Semi Bold', 'Li Ador Noirrit', sans-serif !important;
+    font-weight: 600 !important;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    color: #1e293b;
+    background-color: #ffffff;
+  }
+}
+
+:root {
+  --primary-teal: #065367;
+  --primary-teal-hover: #086982;
+  --accent-yellow: #f59e0b;
+  --font-sans: 'Li Ador Noirrit Semi Bold', 'Li Ador Noirrit', sans-serif;
+  --font-mono: 'Li Ador Noirrit Semi Bold', 'Li Ador Noirrit', sans-serif;
+}
+
+@keyframes announcement-marquee {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-announcement-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: announcement-marquee 24s linear infinite;
+}
+
+.animate-announcement-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Subtle, thin, clean scrollbar for Checkout Order Summary positioned slightly to the right */
+.order-summary-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+}
+
+.order-summary-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.order-summary-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.order-summary-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.45);
+  border-radius: 9999px;
+}
+
+.order-summary-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 116, 139, 0.65);
+}
